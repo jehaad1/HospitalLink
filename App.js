@@ -118,11 +118,7 @@ export default function App() {
           >
             {typeof item.distance === "string"
               ? item.distance
-              : `${
-                  item.distance > 100
-                    ? `${item.distance}m`
-                    : `${item.distance}km`
-                }`}
+              : `${item.distance}km`}
           </Text>
         </View>
       </View>
@@ -163,11 +159,11 @@ export default function App() {
                 },
                 ...docs
                   .filter((d) => !d.isBooked)
+                  .sort((a, b) => a.distance - b.distance)
                   .map((d, i) => {
                     if (i === docs.length - 1) return { ...d, bottom: true };
                     return d;
-                  })
-                  .sort((a, b) => a.distance - b.distance),
+                  }),
               ]}
               renderItem={item}
             />
@@ -183,10 +179,9 @@ export default function App() {
               getDocs();
             }}
             style={loading ? styles.loadingButton : styles.button}
-            title="Book"
           >
             <Text style={styles.buttonText}>
-              {loading ? "Loading.." : "Book"}
+              {loading ? "Loading.." : "Available Beds"}
             </Text>
           </Pressable>
         </>
